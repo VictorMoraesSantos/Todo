@@ -1,19 +1,19 @@
-﻿using ToDo.Domain.Entities;
+﻿using ToDo.Application.DTOs;
 using ToDo.Domain.Enums;
 
 namespace ToDo.Application.Interfaces
 {
-    public interface ITodoListService : IService<TodoList>
+    public interface ITodoListService : IService<TodoListDto>
     {
-        Task<IEnumerable<TodoList>> GetListsByUserIdAsync(int userId);
-        Task<IEnumerable<TodoList>> GetListsByUserIdAndStatusAsync(int userId, TodoListStatus status);
-        Task<IEnumerable<TodoList>> GetListsByUserIdAndArchivedAsync(int userId, bool isArchived);
-        Task<IEnumerable<TodoList>> GetListsByUserIdAndFavoritedAsync(int userId, bool isFavorite);
-        Task<IEnumerable<TodoList>> GetListsThatContainsAsync(string keyword);
-        Task<IEnumerable<TodoList>> GetListsThatContainsTaskWithAsync(string keyword);
-        Task<IEnumerable<TodoList>> GetListsWithCompletedTasksAsync(int userId);
-        Task<IEnumerable<TodoList>> GetListsWithPendingTasksAsync(int userId);
-        Task<IEnumerable<TodoList>> GetPaginatedListsAsync(int userId, int pageNumber, int pageSize);
-        Task<IEnumerable<TodoList>> GetListsSortedByDateAsync(int userId, bool ascending = true);
+        Task<IEnumerable<TodoListDto>> GetListsByUserIdAsync(int userId);
+        Task<IEnumerable<TodoListDto>> GetListsByUserIdAndStatusAsync(int userId, TodoListStatus status);
+        Task<IEnumerable<TodoListDto>> GetListsByUserIdAndArchivedAsync(int userId, bool isArchived);
+        Task<IEnumerable<TodoListDto>> GetListsByUserIdAndFavoritedAsync(int userId, bool isFavorite);
+        Task<IEnumerable<TodoListDto>> GetListsThatContainsAsync(string keyword);
+        Task<IEnumerable<TodoListDto>> GetListsThatContainsTaskWithAsync(string keyword);
+        Task<IEnumerable<TodoListDto>> GetListsWithCompletedTasksAsync(int userId);
+        Task<IEnumerable<TodoListDto>> GetListsWithPendingTasksAsync(int userId);
+        Task<IEnumerable<TodoListDto>> GetPaginatedListsAsync(int userId, int pageNumber, int pageSize);
+        Task<IEnumerable<TodoListDto>> GetListsSortedByDateAsync(int userId, bool ascending = true);
     }
 }

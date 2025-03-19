@@ -1,5 +1,5 @@
-﻿using ToDo.Application.Interfaces;
-using ToDo.Domain.Entities;
+﻿using ToDo.Application.DTOs;
+using ToDo.Application.Interfaces;
 using ToDo.Domain.Enums;
 using ToDo.Domain.Interfaces;
 
@@ -14,77 +14,77 @@ namespace ToDo.Application.Services
             todoListRepository = _todoListRepository;
         }
 
-        public Task AddAsync(TodoList entity)
+        public Task AddAsync(TodoListDto entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(TodoList entity)
+        public Task DeleteAsync(TodoListDto entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetAllAsync()
+        public Task<IEnumerable<TodoListDto>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<TodoList> GetByIdAsync(int id)
+        public Task<TodoListDto> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndArchivedAsync(int userId, bool isArchived)
+        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndArchivedAsync(int userId, bool isArchived)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndFavoritedAsync(int userId, bool isFavorite)
+        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndFavoritedAsync(int userId, bool isFavorite)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndStatusAsync(int userId, TodoListStatus status)
+        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndStatusAsync(int userId, TodoListStatus status)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAsync(int userId)
+        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsSortedByDateAsync(int userId, bool ascending = true)
+        public Task<IEnumerable<TodoListDto>> GetListsSortedByDateAsync(int userId, bool ascending = true)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsThatContainsAsync(string keyword)
+        public Task<IEnumerable<TodoListDto>> GetListsThatContainsAsync(string keyword)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsThatContainsTaskWithAsync(string keyword)
+        public Task<IEnumerable<TodoListDto>> GetListsThatContainsTaskWithAsync(string keyword)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsWithCompletedTasksAsync(int userId)
+        public Task<IEnumerable<TodoListDto>> GetListsWithCompletedTasksAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsWithPendingTasksAsync(int userId)
+        public Task<IEnumerable<TodoListDto>> GetListsWithPendingTasksAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TodoList>> GetPaginatedListsAsync(int userId, int pageNumber, int pageSize)
+        public Task<IEnumerable<TodoListDto>> GetPaginatedListsAsync(int userId, int pageNumber, int pageSize)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(TodoList entity)
+        public Task UpdateAsync(TodoListDto entity)
         {
             throw new NotImplementedException();
         }

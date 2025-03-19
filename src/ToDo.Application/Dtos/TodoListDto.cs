@@ -1,31 +1,26 @@
-﻿using ToDo.Domain.Enums;
+﻿using ToDo.Application.Dtos;
+using ToDo.Domain.Enums;
 
-namespace ToDo.Application.Dtos
+namespace ToDo.Application.DTOs
 {
-    public record TodoListDto
+    public record TodoListDto : BaseEntityDto<int>
     {
-        public int Id { get; init; } = default!;
-        public string ExternalId { get; init; } = default!;
-        public string Title { get; init; } = default!;
-        public string Description { get; init; } = default!;
-        public TodoListStatus Status { get; init; }
-        public bool IsFavorite { get; init; }
-        public List<TodoItemDto> TodoItems { get; init; } = new();
-
-        public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; init; }
-
-        public TodoListDto(int id, string externalId, string title, string description, TodoListStatus status, bool isFavorite, List<TodoItemDto> todoItems, DateTime createdAt, DateTime? updatedAt)
+        public TodoListDto(int id, string externalId, DateTime createdAt, string title, string description, TodoListStatus status, bool isFavorite, int userId, List<TodoItemDto> todoItems)
+            : base(id, externalId, createdAt)
         {
-            Id = id;
-            ExternalId = externalId;
             Title = title;
             Description = description;
             Status = status;
             IsFavorite = isFavorite;
+            UserId = userId;
             TodoItems = todoItems;
-            CreatedAt = createdAt;
-            UpdatedAt = updatedAt;
         }
+
+        public string Title { get; init; } = default!;
+        public string Description { get; init; } = default!;
+        public TodoListStatus Status { get; init; }
+        public bool IsFavorite { get; init; }
+        public int UserId { get; init; }
+        public List<TodoItemDto> TodoItems { get; init; } = new();
     }
 }

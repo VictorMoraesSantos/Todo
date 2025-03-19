@@ -1,23 +1,13 @@
-﻿using ToDo.Domain.Enums;
+﻿using ToDo.Application.DTOs;
+using ToDo.Domain.Enums;
 
 namespace ToDo.Application.Dtos
 {
-    public record TodoItemDto
+    public record TodoItemDto : BaseEntityDto<int>
     {
-        public int Id { get; init; } = default!;
-        public string ExternalId { get; init; } = default!;
-        public string Title { get; init; } = default!;
-        public string Description { get; init; } = default!;
-        public DateTime? DueDate { get; init; }
-        public TodoItemPriority Priority { get; init; }
-        public TodoItemStatus Status { get; init; }
-        //public List<CommentDto> Comments { get; init; } = new();
-        public int ListId { get; init; }
-
-        public TodoItemDto(int id, string externalId, string title, string description, DateTime? dueDate, TodoItemPriority priority, TodoItemStatus status, int listId)
+        public TodoItemDto(int id, string externalId, DateTime createdAt, string title, string description, DateTime? dueDate, TodoItemPriority priority, TodoItemStatus status, int listId)
+            : base(id, externalId, createdAt)
         {
-            Id = id;
-            ExternalId = externalId;
             Title = title;
             Description = description;
             DueDate = dueDate;
@@ -25,5 +15,12 @@ namespace ToDo.Application.Dtos
             Status = status;
             ListId = listId;
         }
+
+        public string Title { get; init; } = default!;
+        public string Description { get; init; } = default!;
+        public DateTime? DueDate { get; init; }
+        public TodoItemPriority Priority { get; init; }
+        public TodoItemStatus Status { get; init; }
+        public int ListId { get; init; }
     }
 }
