@@ -32,7 +32,7 @@ namespace ToDo.Infrastructure.Repositories
             return await _context.TodoLists.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TodoList>? GetById(int id)
+        public async Task<TodoList> GetById(int id)
         {
             return await _context.TodoLists.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -42,54 +42,68 @@ namespace ToDo.Infrastructure.Repositories
             return await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndArchived(int userId, bool isArchived)
+        public async Task<IEnumerable<TodoList>> GetListsByUserIdAndArchived(int userId, bool isArchived)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking()
+                .Where(x => x.UserId == userId && (isArchived ? x.Status == TodoListStatus.Archived : x.Status != TodoListStatus.Archived))
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndFavorited(int userId, bool isFavorite)
+        public async Task<IEnumerable<TodoList>> GetListsByUserIdAndFavorited(int userId, bool isFavorite)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId && x.IsFavorite == isFavorite).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsByUserIdAndStatus(int userId, TodoListStatus status)
+        public async Task<IEnumerable<TodoList>> GetListsByUserIdAndStatus(int userId, TodoListStatus status)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId && x.Status == status).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsSortedByDate(int userId, bool ascending = true)
+        public async Task<IEnumerable<TodoList>> GetListsSortedByDate(int userId, bool ascending = true)
         {
-            throw new NotImplementedException();
+            return ascending
+                ? await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId).OrderBy(x => x.CreatedAt).ToListAsync()
+                : await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId).OrderByDescending(x => x.CreatedAt).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsThatContains(string keyword)
+        public async Task<IEnumerable<TodoList>> GetListsThatContains(string keyword)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(keyword)) return new List<TodoList>();
+
+            return await _context.TodoLists.AsNoTracking()
+                .Where(x => EF.Functions.Like(x.Title, $"%{keyword}%") || EF.Functions.Like(x.Description, $"%{keyword}%"))
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsThatContainsTaskWith(string keyword)
+        public async Task<IEnumerable<TodoList>> GetListsThatContainsTaskWith(string keyword)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking().Where(x => x.TodoItems.Any(ti => ti.Title.Contains(keyword) || ti.Description.Contains(keyword))).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsWithCompletedTasks(int userId)
+        public async Task<IEnumerable<TodoList>> GetListsWithCompletedTasks(int userId)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId && x.TodoItems.Any(ti => ti.Status == TodoItemStatus.Completed)).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetListsWithPendingTasks(int userId)
+        public async Task<IEnumerable<TodoList>> GetListsWithPendingTasks(int userId)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking().Where(x => x.UserId == userId && x.TodoItems.Any(ti => ti.Status == TodoItemStatus.Pending)).ToListAsync();
         }
 
-        public Task<IEnumerable<TodoList>> GetPaginatedLists(int userId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<TodoList>> GetPaginatedLists(int userId, int pageNumber = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            return await _context.TodoLists.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderBy(x => x.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
-        public Task Update(TodoList entity)
+        public async Task Update(TodoList entity)
         {
-            throw new NotImplementedException();
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }
