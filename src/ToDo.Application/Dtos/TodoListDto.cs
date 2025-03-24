@@ -11,6 +11,6 @@ namespace ToDo.Application.Dtos
         TodoListStatus Status,
         bool IsFavorite,
         int UserId,
-        List<TodoItemDto> TodoItems
+        List<TodoItemDto>? TodoItems = null
     ) : BaseEntityDto<int>(Id, ExternalId, CreatedAt);
 }

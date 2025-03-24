@@ -26,6 +26,9 @@ namespace ToDo.IoC
             services.AddScoped<ITodoListRepository, TodoListRepository>();
             services.AddScoped<ITodoListService, TodoListServices>();
 
+            services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            services.AddScoped<ITodoItemService, TodoItemServices>();
+
             return services;
         }
     }

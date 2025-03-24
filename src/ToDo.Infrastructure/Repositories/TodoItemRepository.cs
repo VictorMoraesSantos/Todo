@@ -12,7 +12,7 @@ namespace ToDo.Infrastructure.Repositories
 
         public TodoItemRepository(ApplicationDbContext context)
         {
-            context = _context;
+            _context = context;
         }
 
         public async Task Add(TodoItem entity)

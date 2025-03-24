@@ -7,11 +7,11 @@ using ToDo.Domain.Interfaces;
 
 namespace ToDo.Application.Services
 {
-    public class TodoItemService : ITodoItemService
+    public class TodoItemServices : ITodoItemService
     {
         private readonly ITodoItemRepository _todoItemRepository;
 
-        public TodoItemService(ITodoItemRepository todoItemRepository)
+        public TodoItemServices(ITodoItemRepository todoItemRepository)
         {
             _todoItemRepository = todoItemRepository;
         }

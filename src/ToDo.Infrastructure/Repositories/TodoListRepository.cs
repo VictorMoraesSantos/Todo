@@ -17,12 +17,12 @@ namespace ToDo.Infrastructure.Repositories
 
         public async Task<TodoList> GetById(int id)
         {
-            return await _context.TodoLists.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.TodoLists.AsNoTracking().Include(x => x.TodoItems).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<TodoList>> GetAll()
         {
-            return await _context.TodoLists.AsNoTracking().ToListAsync();
+            return await _context.TodoLists.AsNoTracking().Include(x => x.TodoItems).ToListAsync();
         }
 
         public async Task Add(TodoList entity)
@@ -45,12 +45,12 @@ namespace ToDo.Infrastructure.Repositories
 
         public async Task<IEnumerable<TodoList>> GetByStatusAsync(TodoListStatus status)
         {
-            return await _context.TodoLists.AsNoTracking().Where(x => x.Status == status).ToListAsync();
+            return await _context.TodoLists.AsNoTracking().Include(x => x.TodoItems).Where(x => x.Status == status).ToListAsync();
         }
 
         public async Task<IEnumerable<TodoList>> GetFavoritesAsync(bool isFavorite)
         {
-            return await _context.TodoLists.AsNoTracking().Where(x => x.IsFavorite == isFavorite).ToListAsync();
+            return await _context.TodoLists.AsNoTracking().Include(x => x.TodoItems).Where(x => x.IsFavorite == isFavorite).ToListAsync();
         }
     }
 }
