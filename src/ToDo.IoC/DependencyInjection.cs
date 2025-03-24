@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ToDo.Application.Interfaces;
+using ToDo.Application.Services;
 using ToDo.Domain.Interfaces;
 using ToDo.Infrastructure.Data;
 using ToDo.Infrastructure.Repositories;
@@ -22,6 +24,7 @@ namespace ToDo.IoC
                 options.UseNpgsql(connectionString));
 
             services.AddScoped<ITodoListRepository, TodoListRepository>();
+            services.AddScoped<ITodoListService, TodoListServices>();
 
             return services;
         }

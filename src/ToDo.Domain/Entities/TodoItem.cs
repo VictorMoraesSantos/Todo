@@ -22,35 +22,34 @@ namespace ToDo.Domain.Entities
 
         protected TodoItem() { }
 
-        public void CreateTodoItem(string title, string description, DateTime dueDate, TodoItemPriority priority, int listId)
+        public TodoItem(string title, string description, DateTime dueDate, TodoItemPriority priority, int listId)
         {
             Title = title;
             Description = description;
             DueDate = dueDate;
             Priority = priority;
-            Status = TodoItemStatus.Pending;
             ListId = listId;
+            Status = TodoItemStatus.Pending;
         }
 
-        public void UpdateTodoItem(string? title, string? description, DateTime? dueDate, TodoItemPriority? priority, TodoItemStatus? status)
+        public void UpdateTodoItem(string? title, string? description, DateTime? dueDate, TodoItemPriority? priority)
         {
             Title = title ?? Title;
             Description = description ?? Description;
             DueDate = dueDate ?? DueDate;
             Priority = priority ?? Priority;
-            Status = status ?? Status;
             Updated();
         }
 
-        public void MarkTodoItemAsCompleted()
+        public void SetStatus(TodoItemStatus status)
         {
-            Status = TodoItemStatus.Completed;
+            Status = status;
             Updated();
         }
 
-        public void MarkAsCompleted()
+        public void SetPriority(TodoItemPriority priority)
         {
-            Status = TodoItemStatus.Completed;
+            Priority = priority;
             Updated();
         }
 

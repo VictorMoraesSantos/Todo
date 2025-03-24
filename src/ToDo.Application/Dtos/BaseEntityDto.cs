@@ -1,4 +1,6 @@
-﻿namespace ToDo.Application.DTOs
+﻿using System.Text.Json.Serialization;
+
+namespace ToDo.Application.Dtos
 {
     public record BaseEntityDto<T>
     {
@@ -8,9 +10,11 @@
             ExternalId = externalId;
             CreatedAt = createdAt;
         }
-
-        public T Id { get; init; } = default!;
+        [JsonPropertyOrder(-3)]
+        public T Id { get; set; }
+        [JsonPropertyOrder(-2)]
         public string ExternalId { get; init; } = default!;
+        [JsonPropertyOrder(-1)]
         public DateTime CreatedAt { get; init; }
     }
 }

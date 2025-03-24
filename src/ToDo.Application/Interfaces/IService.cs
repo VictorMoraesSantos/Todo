@@ -1,6 +1,4 @@
-﻿using ToDo.Application.DTOs;
-using ToDo.Domain.Common;
-using ToDo.Domain.Entities;
+﻿using ToDo.Application.Dtos;
 
 namespace ToDo.Application.Interfaces
 {
@@ -10,6 +8,6 @@ namespace ToDo.Application.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task DeleteAsync(int id);
     }
 }

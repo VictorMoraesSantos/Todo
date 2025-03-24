@@ -1,6 +1,8 @@
-﻿using ToDo.Application.DTOs;
+﻿using ToDo.Application.Dtos;
 using ToDo.Application.Interfaces;
+using ToDo.Domain.Entities;
 using ToDo.Domain.Enums;
+using ToDo.Domain.Exceptions;
 using ToDo.Domain.Interfaces;
 
 namespace ToDo.Application.Services
@@ -11,82 +13,112 @@ namespace ToDo.Application.Services
 
         public TodoListServices(ITodoListRepository todoListRepository)
         {
-            todoListRepository = _todoListRepository;
+            _todoListRepository = todoListRepository;
         }
 
-        public Task AddAsync(TodoListDto entity)
+        public async Task<TodoListDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList list = await _todoListRepository.GetById(id)!;
+            return list != null ? TodoListMapper.ToDto(list) : null;
         }
 
-        public Task DeleteAsync(TodoListDto entity)
+        public async Task<IEnumerable<TodoListDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            IEnumerable<TodoList> lists = await _todoListRepository.GetAll();
+            IEnumerable<TodoListDto> todoListsDto = lists.Select(TodoListMapper.ToDto);
+            return todoListsDto;
         }
 
-        public Task<IEnumerable<TodoListDto>> GetAllAsync()
+        public async Task AddAsync(TodoListDto entity)
         {
-            throw new NotImplementedException();
+            if (entity != null)
+            {
+                TodoList todoList = TodoListMapper.ToEntity(entity);
+                await _todoListRepository.Add(todoList);
+            }
         }
 
-        public Task<TodoListDto> GetByIdAsync(int id)
+        public async Task UpdateAsync(TodoListDto dto)
         {
-            throw new NotImplementedException();
+            TodoList entity = await _todoListRepository.GetById(dto.Id)!;
+            if (entity == null)
+                throw new DomainException("Entidade não encontrada.");
+
+            entity.UpdateList(dto.Title, dto.Description);
+
+            await _todoListRepository.Update(entity);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndArchivedAsync(int userId, bool isArchived)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if (id != null)
+            {
+                TodoList todoList = await _todoListRepository.GetById(id);
+                await _todoListRepository.Delete(todoList);
+            }
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndFavoritedAsync(int userId, bool isFavorite)
+        public async Task MarkAsActiveAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList todoList = await _todoListRepository.GetById(id);
+
+            todoList.MarkAsActive();
+
+            await _todoListRepository.Update(todoList);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAndStatusAsync(int userId, TodoListStatus status)
+        public async Task MarkAsFavoriteAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList todoList = await _todoListRepository.GetById(id);
+
+            todoList.MarkAsFavorite();
+
+            await _todoListRepository.Update(todoList);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsByUserIdAsync(int userId)
+        public async Task UnmarkAsFavoriteAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList todoList = await _todoListRepository.GetById(id);
+
+            todoList.UnmarkAsFavorite();
+
+            await _todoListRepository.Update(todoList);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsSortedByDateAsync(int userId, bool ascending = true)
+        public async Task MarkAsArchivedAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList todoList = await _todoListRepository.GetById(id);
+
+            todoList.MarkAsArchived();
+
+            await _todoListRepository.Update(todoList);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsThatContainsAsync(string keyword)
+        public async Task MarkAsDeletedAsync(int id)
         {
-            throw new NotImplementedException();
+            TodoList todoList = await _todoListRepository.GetById(id);
+
+            todoList.MarkAsDeleted();
+
+            await _todoListRepository.Update(todoList);
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsThatContainsTaskWithAsync(string keyword)
+        public async Task<IEnumerable<TodoListDto>> GetByStatusAsync(TodoListStatus status)
         {
-            throw new NotImplementedException();
+            IEnumerable<TodoList> todoLists = await _todoListRepository.GetByStatusAsync(status);
+
+            IEnumerable<TodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
+
+            return todoListsDto;
         }
 
-        public Task<IEnumerable<TodoListDto>> GetListsWithCompletedTasksAsync(int userId)
+        public async Task<IEnumerable<TodoListDto>> GetFavoritesAsync(bool favorited = true)
         {
-            throw new NotImplementedException();
-        }
+            IEnumerable<TodoList> todoLists = await _todoListRepository.GetFavoritesAsync(favorited);
 
-        public Task<IEnumerable<TodoListDto>> GetListsWithPendingTasksAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
+            IEnumerable<TodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
 
-        public Task<IEnumerable<TodoListDto>> GetPaginatedListsAsync(int userId, int pageNumber, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(TodoListDto entity)
-        {
-            throw new NotImplementedException();
+            return todoListsDto;
         }
     }
 }

@@ -10,35 +10,60 @@ namespace ToDo.Domain.Entities
         public TodoListStatus Status { get; private set; }
         public bool IsFavorite { get; private set; }
         public int UserId { get; private set; } = default!;
-        public List<TodoItem> TodoItems { get; private set; } = new();
+        private readonly List<TodoItem> _todoItems = new();
+        public IReadOnlyCollection<TodoItem> TodoItems => _todoItems.AsReadOnly();
 
         public TodoList() { }
 
-        public void CreateTodoList(string title, string description, List<TodoItem> todoItems)
+        public TodoList(string title, string description, int userId, List<TodoItem>? todoItems)
         {
             Title = title;
             Description = description;
+            UserId = userId;
             Status = TodoListStatus.Active;
-            TodoItems = todoItems ?? new List<TodoItem>();
+            _todoItems = todoItems;
         }
 
-        public void UpdateTodoList(string? title, string? description, TodoListStatus? status, List<TodoItem>? todoItems)
+        public void UpdateList(string? title, string? description)
         {
             Title = title ?? Title;
             Description = description ?? Description;
-            Status = status ?? Status;
-            TodoItems = todoItems ?? TodoItems;
             Updated();
         }
-        public void ArchiveTodoList()
+
+        public void AddTodoItem(TodoItem item)
+        {
+            _todoItems.Add(item);
+            Updated();
+        }
+
+        public void MarkAsActive()
+        {
+            Status = TodoListStatus.Active;
+            Updated();
+        }
+
+        public void MarkAsArchived()
         {
             Status = TodoListStatus.Archived;
             Updated();
         }
 
+        public void MarkAsDeleted()
+        {
+            Status = TodoListStatus.Deleted;
+            Deleted();
+        }
+
         public void MarkAsFavorite()
         {
             IsFavorite = true;
+            Updated();
+        }
+
+        public void UnmarkAsFavorite()
+        {
+            IsFavorite = false;
             Updated();
         }
     }
