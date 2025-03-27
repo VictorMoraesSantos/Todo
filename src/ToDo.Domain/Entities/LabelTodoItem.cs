@@ -8,7 +8,7 @@
         public int TodoItemId { get; private set; }
         public TodoItem TodoItem { get; private set; }
 
-        protected LabelTodoItem() { } // Necessário para EF Core
+        protected LabelTodoItem() { }
 
         public LabelTodoItem(int todoItemId, int labelId)
         {

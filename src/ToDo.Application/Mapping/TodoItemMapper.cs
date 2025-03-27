@@ -1,11 +1,17 @@
 ﻿using ToDo.Domain.Entities;
 using ToDo.Application.Dtos;
+using ToDo.Application.Mapping;
 
 public static class TodoItemMapper
 {
     public static TodoItemDto ToDto(TodoItem todoItem)
     {
         if (todoItem == null) return null;
+
+        List<LabelDto> labels = todoItem.LabelTodoItems?
+            .Where(lti => lti.Label != null)
+            .Select(lti => LabelMapper.ToDto(lti.Label))
+            .ToList();
 
         return new TodoItemDto(
             Id: todoItem.Id,
@@ -16,7 +22,8 @@ public static class TodoItemMapper
             DueDate: todoItem.DueDate,
             Priority: todoItem.Priority,
             Status: todoItem.Status,
-            ListId: todoItem.ListId
+            ListId: todoItem.ListId,
+            Labels: labels
         );
     }
 

@@ -1,4 +1,5 @@
 ﻿using ToDo.Domain.Common;
+using ToDo.Domain.Exceptions;
 
 namespace ToDo.Domain.Entities
 {
@@ -9,7 +10,7 @@ namespace ToDo.Domain.Entities
 
         protected Label() { }
 
-        public void CreateLabel(string name, string color)
+        public Label(string name, string color)
         {
             Validate(name, color);
             Name = name;
@@ -30,10 +31,10 @@ namespace ToDo.Domain.Entities
         private void Validate(string name, string color)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Name cannot be empty.", nameof(name));
+                throw new DomainException("Name cannot be empty.");
 
             if (string.IsNullOrWhiteSpace(color))
-                throw new ArgumentException("Color cannot be empty.", nameof(color));
+                throw new DomainException("Color cannot be empty.");
         }
     }
 }

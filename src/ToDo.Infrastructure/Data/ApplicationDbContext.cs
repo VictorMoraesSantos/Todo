@@ -17,7 +17,6 @@ namespace ToDo.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // 🔹 Definindo a chave composta para `LabelTodoItem`
             modelBuilder.Entity<LabelTodoItem>()
                 .HasKey(lt => new { lt.LabelId, lt.TodoItemId });
 

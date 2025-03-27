@@ -3,14 +3,14 @@ using ToDo.Domain.Enums;
 
 namespace ToDo.Application.Interfaces
 {
-    public interface ITodoListService : IService<TodoListDto>
+    public interface ITodoListService : IService<CreateTodoListDto, ReadTodoListDto>
     {
         Task MarkAsActiveAsync(int id);
         Task MarkAsFavoriteAsync(int id);
         Task UnmarkAsFavoriteAsync(int id);
         Task MarkAsArchivedAsync(int id);
         Task MarkAsDeletedAsync(int id);
-        Task<IEnumerable<TodoListDto>> GetByStatusAsync(TodoListStatus status);
-        Task<IEnumerable<TodoListDto>> GetFavoritesAsync(bool favorited = true);
+        Task<IEnumerable<ReadTodoListDto>> GetByStatusAsync(TodoListStatus status);
+        Task<IEnumerable<ReadTodoListDto>> GetFavoritesAsync(bool favorited = true);
     }
 }

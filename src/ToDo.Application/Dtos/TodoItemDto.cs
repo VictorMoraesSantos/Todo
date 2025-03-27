@@ -11,6 +11,7 @@ namespace ToDo.Application.Dtos
         DateTime? DueDate,
         TodoItemPriority Priority,
         TodoItemStatus Status,
-        int ListId
+        int ListId,
+        List<LabelDto>? Labels = null
     ) : BaseEntityDto<int>(Id, ExternalId, CreatedAt);
 }

@@ -15,30 +15,43 @@ namespace ToDo.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task Add(TodoItem entity)
-        {
-            await _context.TodoItems.AddAsync(entity);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<TodoItem>? GetById(int id)
         {
-            return await _context.TodoItems.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.TodoItems.AsNoTracking()
+                .Include(x => x.LabelTodoItems)
+                .ThenInclude(lti => lti.Label)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<TodoItem>> GetAll()
         {
-            return await _context.TodoItems.AsNoTracking().ToListAsync();
+            return await _context.TodoItems.AsNoTracking()
+                .Include(x => x.LabelTodoItems)
+                .ThenInclude(lti => lti.Label)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<TodoItem>> GetByPriority(TodoItemPriority priority)
         {
-            return await _context.TodoItems.AsNoTracking().Where(x => x.Priority == priority).ToListAsync();
+            return await _context.TodoItems.AsNoTracking()
+                .Where(x => x.Priority == priority)
+                .Include(x => x.LabelTodoItems)
+                .ThenInclude(lti => lti.Label)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<TodoItem>> GetByStatus(TodoItemStatus status)
         {
-            return await _context.TodoItems.AsNoTracking().Where(x => x.Status == status).ToListAsync();
+            return await _context.TodoItems.AsNoTracking()
+                .Include(x => x.LabelTodoItems)
+                .ThenInclude(lti => lti.Label)
+                .Where(x => x.Status == status).ToListAsync();
+        }
+
+        public async Task Add(TodoItem entity)
+        {
+            await _context.TodoItems.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task Update(TodoItem entity)

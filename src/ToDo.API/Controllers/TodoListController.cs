@@ -18,17 +18,17 @@ namespace ToDo.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<GetHttpResponseDto<TodoListDto>> GetById(int id)
+        public async Task<GetHttpResponseDto<ReadTodoListDto>> GetById(int id)
         {
-            TodoListDto list = await _todoListService.GetByIdAsync(id);
-            return GetHttpResponseDto<TodoListDto>.Ok(list);
+            ReadTodoListDto list = await _todoListService.GetByIdAsync(id);
+            return GetHttpResponseDto<ReadTodoListDto>.Ok(list);
         }
 
         [HttpGet]
-        public async Task<GetHttpResponseDto<IEnumerable<TodoListDto>>> GetAll()
+        public async Task<GetHttpResponseDto<IEnumerable<ReadTodoListDto>>> GetAll()
         {
-            IEnumerable<TodoListDto> lists = await _todoListService.GetAllAsync();
-            return GetHttpResponseDto<IEnumerable<TodoListDto>>.Ok(lists);
+            IEnumerable<ReadTodoListDto> lists = await _todoListService.GetAllAsync();
+            return GetHttpResponseDto<IEnumerable<ReadTodoListDto>>.Ok(lists);
         }
 
         [HttpPatch("{id}/active")]
@@ -67,14 +67,14 @@ namespace ToDo.API.Controllers
         }
 
         [HttpGet("status/{status}")]
-        public async Task<GetHttpResponseDto<IEnumerable<TodoListDto>>> GetByStatus(TodoListStatus status)
+        public async Task<GetHttpResponseDto<IEnumerable<ReadTodoListDto>>> GetByStatus(TodoListStatus status)
         {
-            IEnumerable<TodoListDto> lists = await _todoListService.GetByStatusAsync(status);
-            return GetHttpResponseDto<IEnumerable<TodoListDto>>.Ok(lists);
+            IEnumerable<ReadTodoListDto> lists = await _todoListService.GetByStatusAsync(status);
+            return GetHttpResponseDto<IEnumerable<ReadTodoListDto>>.Ok(lists);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(TodoListDto todoListDto)
+        public async Task<ActionResult> Create(CreateTodoListDto todoListDto)
         {
             if (todoListDto == null)
                 return BadRequest();
@@ -84,7 +84,7 @@ namespace ToDo.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(TodoListDto todoListDto)
+        public async Task<ActionResult> Update(CreateTodoListDto todoListDto)
         {
             if (todoListDto == null)
                 return BadRequest();
@@ -101,10 +101,10 @@ namespace ToDo.API.Controllers
         }
 
         [HttpGet("favorites")]
-        public async Task<GetHttpResponseDto<IEnumerable<TodoListDto>>> GetFavorites(bool favorited = true)
+        public async Task<GetHttpResponseDto<IEnumerable<ReadTodoListDto>>> GetFavorites(bool favorited = true)
         {
-            IEnumerable<TodoListDto> lists = await _todoListService.GetFavoritesAsync(favorited);
-            return GetHttpResponseDto<IEnumerable<TodoListDto>>.Ok(lists);
+            IEnumerable<ReadTodoListDto> lists = await _todoListService.GetFavoritesAsync(favorited);
+            return GetHttpResponseDto<IEnumerable<ReadTodoListDto>>.Ok(lists);
         }
     }
 }

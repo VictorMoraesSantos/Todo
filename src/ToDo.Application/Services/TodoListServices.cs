@@ -16,108 +16,97 @@ namespace ToDo.Application.Services
             _todoListRepository = todoListRepository;
         }
 
-        public async Task<TodoListDto> GetByIdAsync(int id)
+        public async Task<ReadTodoListDto> GetByIdAsync(int id)
         {
+            if (id <= 0)
+                throw new DomainException("Id não pode ser menor ou igual a zero.");
+
             TodoList list = await _todoListRepository.GetById(id)!;
-            return list != null ? TodoListMapper.ToDto(list) : null;
+            ReadTodoListDto todoListDto = TodoListMapper.ToDto(list);
+            return todoListDto;
         }
 
-        public async Task<IEnumerable<TodoListDto>> GetAllAsync()
+        public async Task<IEnumerable<ReadTodoListDto>> GetAllAsync()
         {
             IEnumerable<TodoList> lists = await _todoListRepository.GetAll();
-            IEnumerable<TodoListDto> todoListsDto = lists.Select(TodoListMapper.ToDto);
+            IEnumerable<ReadTodoListDto> todoListsDto = lists.Select(TodoListMapper.ToDto);
             return todoListsDto;
         }
 
-        public async Task AddAsync(TodoListDto entity)
+        public async Task AddAsync(CreateTodoListDto entity)
         {
-            if (entity != null)
-            {
-                TodoList todoList = TodoListMapper.ToEntity(entity);
-                await _todoListRepository.Add(todoList);
-            }
+            if (entity == null)
+                throw new DomainException("O DTO não pode ser nulo.");
+
+            TodoList todoList = TodoListMapper.ToEntity(entity);
+            await _todoListRepository.Add(todoList);
         }
 
-        public async Task UpdateAsync(TodoListDto dto)
+        public async Task UpdateAsync(CreateTodoListDto dto)
         {
             TodoList entity = await _todoListRepository.GetById(dto.Id)!;
             if (entity == null)
                 throw new DomainException("Entidade não encontrada.");
 
             entity.UpdateList(dto.Title, dto.Description);
-
             await _todoListRepository.Update(entity);
         }
 
         public async Task DeleteAsync(int id)
         {
-            if (id != null)
-            {
-                TodoList todoList = await _todoListRepository.GetById(id);
-                await _todoListRepository.Delete(todoList);
-            }
+            if (id <= 0)
+                throw new DomainException("Id não pode ser menor ou igual a zero.");
+
+            TodoList todoList = await _todoListRepository.GetById(id);
+            await _todoListRepository.Delete(todoList);
         }
 
         public async Task MarkAsActiveAsync(int id)
         {
             TodoList todoList = await _todoListRepository.GetById(id);
-
             todoList.MarkAsActive();
-
             await _todoListRepository.Update(todoList);
         }
 
         public async Task MarkAsFavoriteAsync(int id)
         {
             TodoList todoList = await _todoListRepository.GetById(id);
-
             todoList.MarkAsFavorite();
-
             await _todoListRepository.Update(todoList);
         }
 
         public async Task UnmarkAsFavoriteAsync(int id)
         {
             TodoList todoList = await _todoListRepository.GetById(id);
-
             todoList.UnmarkAsFavorite();
-
             await _todoListRepository.Update(todoList);
         }
 
         public async Task MarkAsArchivedAsync(int id)
         {
             TodoList todoList = await _todoListRepository.GetById(id);
-
             todoList.MarkAsArchived();
-
             await _todoListRepository.Update(todoList);
         }
 
         public async Task MarkAsDeletedAsync(int id)
         {
             TodoList todoList = await _todoListRepository.GetById(id);
-
             todoList.MarkAsDeleted();
-
             await _todoListRepository.Update(todoList);
         }
 
-        public async Task<IEnumerable<TodoListDto>> GetByStatusAsync(TodoListStatus status)
+        public async Task<IEnumerable<ReadTodoListDto>> GetByStatusAsync(TodoListStatus status)
         {
             IEnumerable<TodoList> todoLists = await _todoListRepository.GetByStatusAsync(status);
-
-            IEnumerable<TodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
-
+            IEnumerable<ReadTodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
             return todoListsDto;
         }
 
-        public async Task<IEnumerable<TodoListDto>> GetFavoritesAsync(bool favorited = true)
+        public async Task<IEnumerable<ReadTodoListDto>> GetFavoritesAsync(bool favorited = true)
         {
             IEnumerable<TodoList> todoLists = await _todoListRepository.GetFavoritesAsync(favorited);
-
-            IEnumerable<TodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
-
+            IEnumerable<ReadTodoListDto> todoListsDto = todoLists.Select(TodoListMapper.ToDto);
             return todoListsDto;
         }
     }

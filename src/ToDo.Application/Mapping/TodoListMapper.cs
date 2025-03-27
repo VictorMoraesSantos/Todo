@@ -3,11 +3,11 @@ using ToDo.Domain.Entities;
 
 public static class TodoListMapper
 {
-    public static TodoListDto ToDto(TodoList todoList)
+    public static ReadTodoListDto ToDto(TodoList todoList)
     {
         if (todoList == null) return null!;
 
-        TodoListDto todoListDto = new TodoListDto(
+        ReadTodoListDto todoListDto = new ReadTodoListDto(
             Id: todoList.Id,
             ExternalId: todoList.ExternalId,
             CreatedAt: todoList.CreatedAt,
@@ -22,7 +22,7 @@ public static class TodoListMapper
         return todoListDto;
     }
 
-    public static TodoList ToEntity(TodoListDto todoListDto)
+    public static TodoList ToEntity(CreateTodoListDto todoListDto)
     {
         if (todoListDto == null) return null!;
 
@@ -30,7 +30,7 @@ public static class TodoListMapper
             title: todoListDto.Title,
             description: todoListDto.Description,
             userId: todoListDto.UserId,
-            todoItems: todoListDto.TodoItems.Select(TodoItemMapper.ToEntity).ToList()
+            null
         );
 
         if (todoListDto.IsFavorite)

@@ -2,7 +2,7 @@
 
 namespace ToDo.Application.Dtos
 {
-    public record TodoListDto(
+    public record ReadTodoListDto(
         int Id,
         string ExternalId,
         DateTime CreatedAt,

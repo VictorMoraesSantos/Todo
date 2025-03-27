@@ -10,19 +10,25 @@ namespace ToDo.Application.Services
     public class TodoItemServices : ITodoItemService
     {
         private readonly ITodoItemRepository _todoItemRepository;
+        private readonly ITodoListRepository _todoListRepository;
 
-        public TodoItemServices(ITodoItemRepository todoItemRepository)
+        public TodoItemServices(ITodoItemRepository todoItemRepository, ITodoListRepository todoListRepository)
         {
             _todoItemRepository = todoItemRepository;
+            _todoListRepository = todoListRepository;
         }
 
         public async Task AddAsync(TodoItemDto dto)
         {
-            if (dto != null)
-            {
-                TodoItem todoItem = TodoItemMapper.ToEntity(dto);
-                await _todoItemRepository.Add(todoItem);
-            }
+            if (dto == null)
+                throw new DomainException("O DTO não pode ser nulo.");
+
+            TodoList todoList = await _todoListRepository.GetById(dto.ListId);
+            if (todoList == null)
+                throw new DomainException($"A TodoList com ID {dto.ListId} não existe.");
+
+            TodoItem todoItem = TodoItemMapper.ToEntity(dto);
+            await _todoItemRepository.Add(todoItem);
         }
 
         public async Task DeleteAsync(int id)
