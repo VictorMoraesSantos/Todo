@@ -13,6 +13,10 @@ namespace ToDo.IoC
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<ITodoListService, TodoListServices>();
+            services.AddScoped<ILabelService, LabelService>();
+            services.AddScoped<ITodoItemService, TodoItemServices>();
+
             return services;
         }
 
@@ -20,19 +24,13 @@ namespace ToDo.IoC
         {
             string connectionString = configuration.GetConnectionString("Database")!;
 
-            services.AddDbContext<ApplicationDbContext>((options) =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString));
 
             services.AddScoped<ITodoListRepository, TodoListRepository>();
-            services.AddScoped<ITodoListService, TodoListServices>();
-
             services.AddScoped<ILabelTodoItemRepository, LabelTodoItemRepository>();
-
             services.AddScoped<ILabelRepository, LabelRepository>();
-            services.AddScoped<ILabelService, LabelService>();
-
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
-            services.AddScoped<ITodoItemService, TodoItemServices>();
 
             return services;
         }

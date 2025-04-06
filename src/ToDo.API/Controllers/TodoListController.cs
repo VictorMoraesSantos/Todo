@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ToDo.Application.Dtos;
 using ToDo.Application.Interfaces;
 using ToDo.Application.Responses;
@@ -24,6 +25,7 @@ namespace ToDo.API.Controllers
             return GetHttpResponseDto<ReadTodoListDto>.Ok(list);
         }
 
+        [Authorize("Bearer")]
         [HttpGet]
         public async Task<GetHttpResponseDto<IEnumerable<ReadTodoListDto>>> GetAll()
         {

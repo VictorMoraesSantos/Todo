@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ToDo.Domain.Entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ToDo.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -14,9 +16,12 @@ namespace ToDo.Infrastructure.Data
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Label> Labels { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<LabelTodoItem>()
                 .HasKey(lt => new { lt.LabelId, lt.TodoItemId });
 
@@ -36,6 +41,5 @@ namespace ToDo.Infrastructure.Data
                 .HasForeignKey(c => c.TodoItemId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
     }
 }
