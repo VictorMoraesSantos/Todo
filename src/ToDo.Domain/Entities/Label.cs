@@ -16,6 +16,7 @@ namespace ToDo.Domain.Entities
             Name = name;
             Color = color;
         }
+
         public void EditLabel(string? name, string? color)
         {
             Validate(name, color);
@@ -23,12 +24,13 @@ namespace ToDo.Domain.Entities
             Color = color ?? Color;
             Updated();
         }
+
         public void DeleteLabel()
         {
             IsDeleted = true;
         }
 
-        private void Validate(string name, string color)
+        private void Validate(string? name, string? color)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new DomainException("Name cannot be empty.");

@@ -1,5 +1,6 @@
 ﻿using ToDo.Application.Dtos;
 using ToDo.Application.Interfaces;
+using ToDo.Application.Mapping;
 using ToDo.Domain.Entities;
 using ToDo.Domain.Enums;
 using ToDo.Domain.Exceptions;
@@ -31,10 +32,30 @@ namespace ToDo.Application.Services
             await _todoItemRepository.Add(todoItem);
         }
 
+        public async Task AddCommentAsync(int todoItemId, CommentDto commentDto)
+        {
+            Comment entity = CommentMapper.ToEntity(commentDto);
+            await _todoItemRepository.AddComment(todoItemId, entity);
+        }
+
         public async Task DeleteAsync(int id)
         {
             TodoItem todoItem = await _todoItemRepository.GetById(id);
             await _todoItemRepository.Delete(todoItem);
+        }
+
+        public async Task DeleteCommentAsync(int todoItemId, int commentId)
+        {
+            if (todoItemId <= 0 && commentId <= 0)
+                throw new DomainException("Id não pode ser nulo.");
+
+            await _todoItemRepository.DeleteComment(todoItemId, commentId);
+        }
+
+        public async Task EditCommentAsync(int todoItemId, CommentDto commentDto)
+        {
+            Comment entity = CommentMapper.ToEntity(commentDto);
+            await _todoItemRepository.EditComment(todoItemId, entity);
         }
 
         public async Task<IEnumerable<TodoItemDto>> GetAllAsync()
@@ -63,6 +84,20 @@ namespace ToDo.Application.Services
             IEnumerable<TodoItem> todoItems = await _todoItemRepository.GetByStatus(status);
             IEnumerable<TodoItemDto> todoItemsDto = todoItems.Select(TodoItemMapper.ToDto);
             return todoItemsDto;
+        }
+
+        public async Task<CommentDto> GetCommentAsync(int todoItemId, int commentId)
+        {
+            Comment entity = await _todoItemRepository.GetComment(todoItemId, commentId);
+            CommentDto dto = CommentMapper.ToDto(entity);
+            return dto;
+        }
+
+        public async Task<IEnumerable<CommentDto>> GetCommentsAsync(int todoItemId)
+        {
+            IEnumerable<Comment> entities = await _todoItemRepository.GetComments(todoItemId);
+            IEnumerable<CommentDto> dtos = entities.Select(CommentMapper.ToDto);
+            return dtos;
         }
 
         public async Task SetPriorityAsync(int id, TodoItemPriority priority)

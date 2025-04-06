@@ -17,11 +17,13 @@ namespace ToDo.Domain.Entities
             TodoItemId = todoItemId;
         }
 
-        public void EditComment(string newText)
+        public void Edit(string newText)
         {
+            Validate(newText);
             Text = newText;
             Updated();
         }
+
         public void DeleteComment()
         {
             Deleted();

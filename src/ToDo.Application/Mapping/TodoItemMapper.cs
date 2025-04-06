@@ -8,11 +8,6 @@ public static class TodoItemMapper
     {
         if (todoItem == null) return null;
 
-        List<LabelDto> labels = todoItem.LabelTodoItems?
-            .Where(lti => lti.Label != null)
-            .Select(lti => LabelMapper.ToDto(lti.Label))
-            .ToList();
-
         return new TodoItemDto(
             Id: todoItem.Id,
             ExternalId: todoItem.ExternalId,
@@ -23,7 +18,8 @@ public static class TodoItemMapper
             Priority: todoItem.Priority,
             Status: todoItem.Status,
             ListId: todoItem.ListId,
-            Labels: labels
+            Labels: todoItem.LabelTodoItems?.Select(lti => LabelMapper.ToDto(lti.Label)).ToList(),
+            Comments: todoItem.Comments?.Select(c => CommentMapper.ToDto(c)).ToList()
         );
     }
 

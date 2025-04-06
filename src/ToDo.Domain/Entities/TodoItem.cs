@@ -1,5 +1,6 @@
 ﻿using ToDo.Domain.Common;
 using ToDo.Domain.Enums;
+using ToDo.Domain.Exceptions;
 
 namespace ToDo.Domain.Entities
 {
@@ -58,9 +59,31 @@ namespace ToDo.Domain.Entities
             _comments.Add(comment);
         }
 
+        public void EditComment(int commentId, string newText)
+        {
+            Comment comment = _comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+                throw new DomainException("Comentário não encontrado.");
+
+            comment.Edit(newText);
+            Updated();
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            Comment comment = _comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)
+                throw new DomainException("Comentário não encontrado.");
+
+            comment.DeleteComment();
+            _comments.Remove(comment);
+            Updated();
+        }
+
         public void AddLabel(Label label)
         {
             _labelTodoItems.Add(new LabelTodoItem(label.Id, Id));
+            Updated();
         }
     }
 }

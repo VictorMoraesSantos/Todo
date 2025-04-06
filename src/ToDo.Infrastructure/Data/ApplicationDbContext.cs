@@ -29,6 +29,12 @@ namespace ToDo.Infrastructure.Data
                 .HasOne(lt => lt.TodoItem)
                 .WithMany(ti => ti.LabelTodoItems)
                 .HasForeignKey(lt => lt.TodoItemId);
+
+            modelBuilder.Entity<TodoItem>()
+                .HasMany(c => c.Comments)
+                .WithOne(c => c.TodoItem)
+                .HasForeignKey(c => c.TodoItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

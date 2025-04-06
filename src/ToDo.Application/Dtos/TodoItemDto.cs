@@ -12,6 +12,7 @@ namespace ToDo.Application.Dtos
         TodoItemPriority Priority,
         TodoItemStatus Status,
         int ListId,
-        List<LabelDto>? Labels = null
+        List<LabelDto>? Labels = null,
+        List<CommentDto>? Comments = null
     ) : BaseEntityDto<int>(Id, ExternalId, CreatedAt);
 }
